@@ -40,3 +40,15 @@ class JupyterHubLoginHandler(BaseHandler):
         else:
             self.set_status(403)
             self.redirect(self.get_login_url())
+
+
+class JupyterHubLogoutHandler(BaseHandler):
+    def get(self):
+        self.xsrf_token
+
+        # clear the user cookie
+        self.clear_cookie('user')
+
+        # redirect to hub home
+        self.set_status(403)
+        self.redirect('/hub/home')
