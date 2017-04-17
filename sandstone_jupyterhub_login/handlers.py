@@ -46,6 +46,7 @@ class JupyterHubLogoutHandler(BaseHandler):
     def get(self):
         # clear the user cookie
         self.clear_cookie('user')
+        self.clear_cookie('_xsrf')
 
         # redirect to hub home
         self.set_status(302)
