@@ -1,4 +1,5 @@
 from sandstone.lib.handlers.base import BaseHandler
+from sandstone import settings
 import requests
 import os
 
@@ -7,20 +8,27 @@ class JupyterHubLoginHandler(BaseHandler):
         # The XSRF token must be manually set in the absence of
         # a web form. Accessing the property is enough to set it.
         self.xsrf_token
-        
+
         api_token = os.environ['JUPYTERHUB_API_TOKEN']
 
+        # Get the protocol that JupyterHub is using
+        jh_protocol = self.request.headers.get('X-Forwarded-Proto')
+
         url = '{protocol}://{host}/hub/api/authorizations/token/{token}'.format(
-            protocol=self.request.protocol,
+            protocol=jh_protocol,
             host=self.request.host,
             token=api_token
         )
+
+        # Has user deconfigured certificate verification?
+        verify = getattr(settings,'VERIFY_JH_CERT',True)
 
         res = requests.get(
             url,
             headers={
                 'Authorization': 'token %s' % api_token
-            }
+            },
+            verify=verify
         )
 
 

@@ -20,3 +20,9 @@ JupyterHub can now invoke Sandstone IDE by running
 ```
 <sandstone-python-path>/bin/sandstone-jupyterhub
 ```
+
+### Using self-signed certificates
+If you have deployed JupyterHub over SSL using a self-signed certificate, then you must deconfigure verification in the login handler:
+```python
+VERIFY_JH_CERT = False
+```
