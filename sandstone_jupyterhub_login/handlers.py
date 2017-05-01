@@ -10,13 +10,10 @@ class JupyterHubLoginHandler(BaseHandler):
         self.xsrf_token
 
         api_token = os.environ['JUPYTERHUB_API_TOKEN']
+        hub_api_url = os.environ['JUPYTERHUB_API_URL']
 
-        # Get the protocol that JupyterHub is using
-        jh_protocol = self.request.headers.get('X-Forwarded-Proto')
-
-        url = '{protocol}://{host}/hub/api/authorizations/token/{token}'.format(
-            protocol=jh_protocol,
-            host=self.request.host,
+        url = '{hub_url}/authorizations/token/{token}'.format(
+            hub_url=hub_api_url,
             token=api_token
         )
 
